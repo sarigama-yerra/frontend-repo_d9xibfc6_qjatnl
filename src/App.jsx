@@ -1,26 +1,23 @@
-import { useState } from 'react'
+import Hero from './components/Hero'
+import Chapters from './components/Chapters'
+import Footer from './components/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-black text-white">
+      <Hero />
+      <Chapters />
+      <section id="about" className="bg-[#0b0b15] py-16 md:py-24">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">About this Journey</h2>
+          <p className="mt-4 max-w-3xl text-gray-300 leading-relaxed">
+            This is a living, multimedia edition of an autobiographical novel. It fuses manuscript text with images,
+            video, and audio to evoke both the ancient and the futuristic. As you read, you’ll encounter embedded
+            memories, artifacts, and soundscapes that deepen the experience.
+          </p>
         </div>
-      </div>
+      </section>
+      <Footer />
     </div>
   )
 }

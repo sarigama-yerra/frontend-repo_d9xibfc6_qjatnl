@@ -1,6 +1,16 @@
 import { motion } from 'framer-motion'
 
-export default function ChapterCard({ chapter }) {
+function getCoverUrl(chapter) {
+  const ci = chapter?.cover_image
+  if (ci && typeof ci === 'object' && ci.url) return ci.url
+  if (typeof ci === 'string') return ci
+  // fallback placeholder
+  const seed = encodeURIComponent(chapter?.slug || chapter?.title || 'chapter')
+  return `https://picsum.photos/seed/${seed}/800/450`
+}
+
+export default function ChapterCard({ chapter, onOpen }) {
+  const cover = getCoverUrl(chapter)
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -9,9 +19,9 @@ export default function ChapterCard({ chapter }) {
       transition={{ duration: 0.5 }}
       className="group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 p-5 backdrop-blur-lg"
     >
-      {chapter.cover_image && (
+      {cover && (
         <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-xl">
-          <img src={chapter.cover_image} alt={chapter.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <img src={cover} alt={chapter.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
       )}
@@ -27,7 +37,7 @@ export default function ChapterCard({ chapter }) {
       <p className="mt-4 text-gray-200/90 line-clamp-3">{chapter.body}</p>
       <div className="mt-4 flex items-center justify-between">
         <span className="text-xs text-gray-400">{chapter.media?.length || 0} media</span>
-        <a href="#" className="text-sm font-medium text-cyan-300 hover:text-cyan-200">Open</a>
+        <button onClick={() => onOpen?.(chapter)} className="text-sm font-medium text-cyan-300 hover:text-cyan-200">Open</button>
       </div>
     </motion.article>
   )

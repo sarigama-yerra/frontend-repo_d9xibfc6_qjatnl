@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import ChapterCard from './ChapterCard'
 import ChapterModal from './ChapterModal'
+import MapOverlay from './MapOverlay'
 
 export default function Chapters() {
   const [chapters, setChapters] = useState([])
@@ -67,7 +68,10 @@ export default function Chapters() {
         </div>
       </div>
 
-      <ChapterModal open={!!active} onClose={() => setActive(null)} chapter={active} />
+      {/* Floating live map that follows selection */}
+      <MapOverlay chapters={filtered} active={active} onSelect={setActive} />
+
+      <ChapterModal open={!!active} onClose={() => setActive(null)} chapter={active} query={query} />
     </section>
   )
 }

@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import ReadingProgress from './ReadingProgress'
+import { highlightText } from './SearchHighlights'
 
-export default function ChapterModal({ open, onClose, chapter }) {
+export default function ChapterModal({ open, onClose, chapter, query }) {
   return (
     <AnimatePresence>
       {open && chapter && (
@@ -25,8 +27,8 @@ export default function ChapterModal({ open, onClose, chapter }) {
                   src={chapter.cover_image.url}
                   alt={chapter.cover_image.alt_text || chapter.title}
                   className="h-48 w-full object-cover"
-                />
-              )}
+                />)
+              }
               <button
                 aria-label="Close"
                 onClick={onClose}
@@ -35,10 +37,14 @@ export default function ChapterModal({ open, onClose, chapter }) {
                 ✕
               </button>
             </div>
+
             <div className="p-6 overflow-y-auto max-h-[calc(90vh-12rem)]">
-              <h3 className="text-2xl font-bold tracking-tight">{chapter.title}</h3>
+              <div className="mb-4">
+                <ReadingProgress text={chapter.body || ''} />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight">{highlightText(chapter.title, query)}</h3>
               {chapter.subtitle && (
-                <p className="mt-1 text-sm text-gray-400">{chapter.subtitle}</p>
+                <p className="mt-1 text-sm text-gray-400">{highlightText(chapter.subtitle, query)}</p>
               )}
               {chapter.tags?.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -47,8 +53,8 @@ export default function ChapterModal({ open, onClose, chapter }) {
                   ))}
                 </div>
               )}
-              <div className="prose prose-invert mt-6 whitespace-pre-wrap leading-relaxed">
-                {chapter.body}
+              <div id="chapter-body" className="prose prose-invert mt-6 whitespace-pre-wrap leading-relaxed">
+                {highlightText(chapter.body, query)}
               </div>
             </div>
           </motion.div>
